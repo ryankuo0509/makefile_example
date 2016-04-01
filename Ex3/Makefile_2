@@ -1,0 +1,39 @@
+#---------------------------------------------------------------------
+# settings
+#---------------------------------------------------------------------
+PREFIX := $(firstword $(strip $(foreach e,1 2 3 4 5 6 7 8 9,$(wildcard C:/Progra~$(e)/Sunplus/MIDE-V2.2.0/gnu/bin/))))
+
+# binaries
+LIB_SRC = $(shell ls libs/*.c)
+SRCS = $(LIB_SRC) test.c
+OBJS = $(patsubst %.c, %.o, $(SRCS))
+
+# Output
+OUT_DIR = build
+OUT_OBJS = $(addprefix $(OUT_DIR)/, $(OBJS))
+DEPS = $(patsubst %.o, %.d, $(OUT_OBJS))
+
+#---------------------------------------------------------------------
+# executables
+#---------------------------------------------------------------------
+CC := $(PREFIX)/gcc
+MKDIR := /bin/mkdir -p
+
+CFLAGS = -g -MMD -I ./include
+
+-include $(DEPS)
+#---------------------------------------------------------------------
+# Build Rules
+#---------------------------------------------------------------------
+TARGET = test
+
+$(OUT_DIR)/$(TARGET): $(OUT_OBJS)
+    $(CC) -o $@ $^
+
+$(OUT_DIR)/%.o:%.c
+	mkdir -p $(dir $@)
+    $(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -rf $(OUT_DIR)
+
