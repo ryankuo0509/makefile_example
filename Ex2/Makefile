@@ -1,16 +1,30 @@
-#VAPTH src include
+#---------------------------------------------------------------------
+# settings
+#---------------------------------------------------------------------
 vpath %.c src
 vpath %.h include
-
-PREFIX := $(firstword $(strip $(foreach e,1 2 3 4 5 6 7 8 9,$(wildcard C:/Progra~$(e)/Sunplus/MIDE-V2.2.0/gnu/bin/))))
-CC := $(PREFIX)/gcc
 CFLAGS = -I include
+PREFIX := $(firstword $(strip $(foreach e,1 2 3 4 5 6 7 8 9,$(wildcard C:/Progra~$(e)/Sunplus/MIDE-V2.2.0/gnu/bin/))))
 
-TARGET := main
+HOST_ROOT    := .
+OUTPUT_PATH  := output
+#---------------------------------------------------------------------
+# executables
+#---------------------------------------------------------------------
+MKDIR := /bin/mkdir -p
+CC := $(PREFIX)/gcc
 
-main: main.o timeutil.o wdshow.o
-	$(CC) $^ -o $@ 
+#---------------------------------------------------------------------
+# configs
+#---------------------------------------------------------------------
 
+
+#---------------------------------------------------------------------
+# Input dirs, names, files
+#---------------------------------------------------------------------
+TARGET: main.o wdshow.o timeutil.o
+	$(MKDIR) $(OUTPUT_PATH)
+	
 main.o: main.c wdshow.h
 	$(CC) $(CFLAGS) -c $< 
 
@@ -21,4 +35,5 @@ timeutil.o: timeutil.c timeutil.h
 	$(CC) $(CFLAGS) -c $< 
 	
 clean:
-	rm *.o $(TARGET)
+	rm -f *.o $(TARGET) 
+	rmdir $(OUTPUT_PATH)
