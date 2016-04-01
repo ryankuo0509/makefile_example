@@ -1,0 +1,40 @@
+http://k-wiki.icatchtek.com/doku.php?id=sdkds:learn_toolchain
+
+Explain the purpose & basic principle of Make utility
+	Make & shell : explain follow code, which is handled by make or shell, notice the tab characters here?
+	
+		.PHONY: $(PLATFORM) resource FRM
+		$(PLATFORM): resource $(DOWN_PATH)/$(PRJ_NAME).bin FRM lastprj.def
+			@$(ECHO) 'Building $(PLATFORM) : $(PRJ_NAME) $(HW_NAME) $(HW_VER) done'
+		ifeq ($(RES), NO)
+		ifeq ($(ISP), YES)
+			@$(TOOL_PATH_EXE)/FRM-F5
+		endif
+		endif
+		
+	Explain implicit rule & explicit rule
+	Explain .PHONY
+	
+About macro
+	What is macro
+	What is difference between ':=' & '=' & '+='?
+	ifdef, ifeq, ifneq
+About funciton
+	List & explain the functions used in our makefile (tell me how you find all the make function used in Makefile)
+	
+Trace & explain THIRD_PARTY_BUILD flow
+
+Trace MakefileIO flow (run another makefile in a makefile)
+
+include $(HOST_ROOT)/host.def & -include $(HOST_ROOT)/last_hwver_$(PRJ).def
+	Explain why those include?
+
+Try explain how can we build to _SBC folder
+
+Trace toolchain.def for bin folder. How we move toolchain folder to RAM disk?
+
+Find sumpatch in Makefile & explain what it is
+
+Check make ¡Vhelp, then try to explain -C, -d, -j, -p, & -r. Also check open book for makefile debug
+
+Learn $(eval) & $$ if you are interested.
