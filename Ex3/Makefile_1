@@ -1,0 +1,68 @@
+#---------------------------------------------------------------------
+# settings
+#---------------------------------------------------------------------
+PREFIX := $(firstword $(strip $(foreach e,1 2 3 4 5 6 7 8 9,$(wildcard C:/Progra~$(e)/Sunplus/MIDE-V2.2.0/gnu/bin/))))
+
+#vpath %.c libs
+#vpath %.h include
+DIR_SRC += ./libs
+DIR_INC += ./include
+
+# binaries  
+SRCS = $(wildcard *.c) $(wildcard $(DIR_SRC)/*.c)
+OBJS = $(patsubst %.c, %.o, $(SRCS))
+#---------------------------------------------------------------------
+# executables
+#---------------------------------------------------------------------
+CC := $(PREFIX)/gcc
+MKDIR := /bin/mkdir -p
+CFLAGS += -I $(DIR_INC) 
+QUITE := @
+ECHO := echo
+#---------------------------------------------------------------------
+# Build Rules
+#---------------------------------------------------------------------
+TARGET = test
+
+$(TARGET): $(OBJS)
+	@$(CC) $(CFLAGS) -o $@ $^
+	
+dump:
+	$(QUITE) $(ECHO) dump -S 
+	@echo $(SRCS)
+	@echo $(OBJS)
+	$(QUITE) $(ECHO) dump -E 
+    # SRCS: test.c   ./libs/liba.c   ./libs/libb.c
+    # OBJS: test.o   ./libs/liba.o   ./libs/libb.o
+    # DEPS: test.d   ./libs/liba.d   ./libs/libb.d	
+	
+clean:
+	rm -rf *.o $(TARGET) $(OBJS)
+
+	
+#   #$ Original tree
+#   .
+#   ├── include
+#   │   ├── liba.h
+#   │   └── libb.h
+#   ├── libs
+#   │   ├── liba.c
+#   │   └── libb.c
+#   ├── Makefile
+#   └── test.c	
+#   	
+#   [Makefile_1]
+#   $ After building tree
+#   .
+#   ├── include
+#   │   ├── liba.h
+#   │   └── libb.h
+#   ├── libs
+#   │   ├── liba.c
+#   │   └── libb.c
+#   │   └── liba.o
+#   │   └── libb.o	
+#   ├── Makefile
+#   └── test.c
+#   └── test.o
+#   └── test	
